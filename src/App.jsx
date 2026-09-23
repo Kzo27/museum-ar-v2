@@ -34,6 +34,14 @@ const ARTIFACT_DATA = {
     historyTitle: "Simbol Kebijaksanaan",
     historyText: "Keemoat peninggalan kerajaan Hindu-Buddha ini merepresentasikan dewa ilmu pengetahuan dan penyingkir rintangan.",
     hotspotPos: "0 0.5 0"
+  },
+  kelima: {
+    title: "Bendera Pusaka",
+    modelSrc: "https://assets.olicyclestove.my.id/bendera.glb",
+    audioSrc: "/assets/backsound.mp3",
+    historyTitle: "Simbol Kebijaksanaan",
+    historyText: "Keemoat peninggalan kerajaan Hindu-Buddha ini merepresentasikan dewa ilmu pengetahuan dan penyingkir rintangan.",
+    hotspotPos: "0 0.5 0"
   }
 };
 
