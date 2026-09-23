@@ -5,7 +5,7 @@ import '@google/model-viewer';
 const ARTIFACT_DATA = {
   pertama: {
     title: "Pertama Kuda Bersejarah",
-    modelSrc: "/assets/gerobak2.glb",
+    modelSrc: "https://assets.olicyclestove.my.id/gerobak2.glb",
     audioSrc: "/assets/backsound.mp3",
     historyTitle: "Sejarah Pertama Kuda",
     historyText: "Pertama kuda ini digunakan pada abad ke-19 oleh para bangsawan. Terbuat dari kayu jati pilihan dengan interior kain beludru.",
