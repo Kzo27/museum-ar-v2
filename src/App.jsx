@@ -13,7 +13,7 @@ const ARTIFACT_DATA = {
   },
   kedua: {
     title: "Kedua Kuda Bersejarah",
-    modelSrc: "/assets/1kereta.glb",
+    modelSrc: "https://assets.olicyclestove.my.id/1kereta.glb",
     audioSrc: "/assets/backsound.mp3",
     historyTitle: "Sejarah Kedua Kuda",
     historyText: "Kedua kuda ini digunakan pada abad ke-19 oleh para bangsawan. Terbuat dari kayu jati pilihan dengan interior kain beludru.",
@@ -21,7 +21,7 @@ const ARTIFACT_DATA = {
   },
   ketiga: {
     title: "Ketiga Kuda Bersejarah",
-    modelSrc: "/assets/gerobak.glb",
+    modelSrc: "https://assets.olicyclestove.my.id/gerobak.glb",
     audioSrc: "/assets/backsound.mp3",
     historyTitle: "Sejarah Ketiga Kuda",
     historyText: "Ketiga kuda ini digunakan pada abad ke-19 oleh para bangsawan. Terbuat dari kayu jati pilihan dengan interior kain beludru.",
@@ -29,7 +29,7 @@ const ARTIFACT_DATA = {
   },
   keempat: {
     title: "Keemoat Ganesha",
-    modelSrc: "/assets/3kereta.glb",
+    modelSrc: "https://assets.olicyclestove.my.id/3kereta.glb",
     audioSrc: "/assets/backsound.mp3",
     historyTitle: "Simbol Kebijaksanaan",
     historyText: "Keemoat peninggalan kerajaan Hindu-Buddha ini merepresentasikan dewa ilmu pengetahuan dan penyingkir rintangan.",
