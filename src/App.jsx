@@ -106,7 +106,6 @@ function App() {
     }
   }, [isStarted]); 
 
-  // --- KUNCI PERBAIKAN DI SINI ---
   // Audio BENAR-BENAR HANYA dimulai saat progress mencapai 100%
   useEffect(() => {
     if (loadProgress === 100 && isStarted && audioRef.current) {
@@ -125,9 +124,6 @@ function App() {
 
   const handleStartExperience = useCallback(async () => {
     setIsStarted(true);
-    
-    // SEMUA KODE PEMANCING AUDIO TELAH DIHAPUS DARI SINI
-    // Agar audio dipastikan mati/diam selama proses memuat
 
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ 
@@ -144,7 +140,8 @@ function App() {
   if (!artifact) return null;
 
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-black font-sans">
+    // PERUBAHAN 1: Mengganti h-screen menjadi h-[100dvh] agar akurat di mobile
+    <div className="relative w-full h-[100dvh] overflow-hidden bg-black font-sans">
       
       <audio ref={audioRef} src={artifact.audioSrc} loop />
 
@@ -207,16 +204,19 @@ function App() {
             <div 
               className={`absolute left-0 w-full bg-gray-900/90 backdrop-blur-xl rounded-t-3xl border-t border-white/20 shadow-[0_-10px_40px_rgba(0,0,0,0.5)] transition-transform duration-500 ease-in-out z-30 flex flex-col will-change-transform`}
               style={{ 
-                height: '50vh', 
+                // PERUBAHAN 2: Menggunakan dvh agar proporsi tinggi tidak tenggelam
+                height: '50dvh', 
                 bottom: 0,
-                transform: showInfo ? 'translateY(0)' : 'translateY(calc(100% - 85px))' 
+                // Mengurangi jarak translateY yang tersisa saat ditutup untuk memastikan tombol selalu aman terlihat
+                transform: showInfo ? 'translateY(0)' : 'translateY(calc(100% - 90px))' 
               }}
             >
               <div 
                 onClick={() => setShowInfo(!showInfo)}
-                className="w-full h-[85px] flex-shrink-0 flex flex-col items-center justify-center cursor-pointer px-6 relative"
+                // Menambahkan padding-bottom aman (pb-2) agar klik lebih nyaman di layar HP
+                className="w-full h-[90px] pb-2 flex-shrink-0 flex flex-col items-center justify-center cursor-pointer px-6 relative"
               >
-                <div className="w-12 h-1.5 bg-gray-500/70 rounded-full mb-3"></div>
+                <div className="w-12 h-1.5 bg-gray-500/70 rounded-full mb-3 mt-2"></div>
                 
                 <div className="w-full flex items-center justify-between">
                   <h2 className="text-white text-lg md:text-xl font-bold truncate pr-4">
@@ -230,7 +230,7 @@ function App() {
                 </div>
               </div>
 
-              <div className="px-6 pb-8 overflow-y-auto flex-1">
+              <div className="px-6 pb-12 overflow-y-auto flex-1">
                 <p className="text-gray-300 text-sm md:text-base leading-relaxed text-justify">
                   {artifact.historyText}
                 </p>
