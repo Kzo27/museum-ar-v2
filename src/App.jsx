@@ -94,14 +94,12 @@ function App() {
     setArtifact(ARTIFACT_DATA[id] || ARTIFACT_DATA['Bendi']);
   }, []);
 
-  // 2. Optimasi Event Listener Progress (Mencegah Stuttering/Lag saat loading)
+  // 2. Memantau Loading Progress 3D
   useEffect(() => {
     const viewer = modelViewerRef.current;
     if (viewer) {
       const updateProgress = (event) => {
         const percentage = Math.round(event.detail.totalProgress * 100);
-        // HANYA update state jika angkanya benar-benar berubah. 
-        // Ini mencegah React me-render ulang seluruh halaman 60x per detik yang membuat HP lag.
         setLoadProgress((prev) => (prev !== percentage ? percentage : prev));
       };
 
@@ -110,7 +108,14 @@ function App() {
     }
   }, [isStarted]); 
 
-  // 3. Membersihkan (Cleanup) Kamera di latar belakang agar memori HP tidak bocor
+  // 3. Audio dimainkan tepat saat loading menyentuh angka 100%
+  useEffect(() => {
+    if (loadProgress === 100 && isStarted && audioRef.current) {
+      audioRef.current.play().catch(e => console.error("Audio batal diputar:", e));
+    }
+  }, [loadProgress, isStarted]);
+
+  // 4. Membersihkan (Cleanup) Kamera di latar belakang
   useEffect(() => {
     return () => {
       if (videoRef.current && videoRef.current.srcObject) {
@@ -120,12 +125,15 @@ function App() {
     };
   }, []);
 
-  // 4. Inisiasi Kamera dengan Asynchronous (Mencegah frame terhenti mendadak)
+  // 5. Inisiasi Pengalaman AR
   const handleStartExperience = useCallback(async () => {
     setIsStarted(true);
     
+    // Trik "Unlock" Audio: Memancing izin autoplay browser dengan memutar lalu langsung menjedanya
     if (audioRef.current) {
-      audioRef.current.play().catch(e => console.error("Audio batal diputar:", e));
+      audioRef.current.play().then(() => {
+        audioRef.current.pause();
+      }).catch(e => console.log("Unlock audio gagal, mungkin izin browser ditolak:", e));
     }
 
     try {
@@ -169,7 +177,6 @@ function App() {
       <video 
         ref={videoRef} 
         autoPlay playsInline muted
-        // Menambahkan properti will-change untuk optimasi hardware decoding video
         className="absolute inset-0 w-full h-full object-cover z-0 will-change-transform"
       />
 
@@ -198,7 +205,6 @@ function App() {
             auto-rotate
             rotation-per-second="30deg"
             shadow-intensity="1"
-            // 5. Tambahan parameter performa GPU
             power-preference="high-performance"
             className="absolute inset-0 z-10 w-full h-full bg-transparent outline-none pb-24"
           />
@@ -213,7 +219,6 @@ function App() {
                 transform: showInfo ? 'translateY(0)' : 'translateY(calc(100% - 85px))' 
               }}
             >
-              {/* Header / Handle Geser */}
               <div 
                 onClick={() => setShowInfo(!showInfo)}
                 className="w-full h-[85px] flex-shrink-0 flex flex-col items-center justify-center cursor-pointer px-6 relative"
@@ -232,7 +237,6 @@ function App() {
                 </div>
               </div>
 
-              {/* Area Konten Teks Sejarah */}
               <div className="px-6 pb-8 overflow-y-auto flex-1">
                 <p className="text-gray-300 text-sm md:text-base leading-relaxed text-justify">
                   {artifact.historyText}
