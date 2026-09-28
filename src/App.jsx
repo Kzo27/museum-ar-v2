@@ -87,14 +87,12 @@ function App() {
   const [artifact, setArtifact] = useState(null);
   const [loadProgress, setLoadProgress] = useState(0);
 
-  // 1. Mencegah pemanggilan ulang URL parsing
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id');
     setArtifact(ARTIFACT_DATA[id] || ARTIFACT_DATA['Bendi']);
   }, []);
 
-  // 2. Memantau Loading Progress 3D
   useEffect(() => {
     const viewer = modelViewerRef.current;
     if (viewer) {
@@ -108,16 +106,14 @@ function App() {
     }
   }, [isStarted]); 
 
-  // 3. Audio disinkronkan tepat saat loading mencapai 100%
+  // --- KUNCI PERBAIKAN DI SINI ---
+  // Audio BENAR-BENAR HANYA dimulai saat progress mencapai 100%
   useEffect(() => {
     if (loadProgress === 100 && isStarted && audioRef.current) {
-      // Mengembalikan lagu ke detik ke-0 dan menyalakan suaranya (unmute)
-      audioRef.current.currentTime = 0; 
-      audioRef.current.muted = false;   
+      audioRef.current.play().catch(e => console.log("Gagal memutar audio:", e));
     }
   }, [loadProgress, isStarted]);
 
-  // 4. Membersihkan (Cleanup) Kamera di latar belakang
   useEffect(() => {
     return () => {
       if (videoRef.current && videoRef.current.srcObject) {
@@ -127,16 +123,11 @@ function App() {
     };
   }, []);
 
-  // 5. Inisiasi Pengalaman AR
   const handleStartExperience = useCallback(async () => {
     setIsStarted(true);
     
-    // TRIK AUDIO BUNGKAM: Putar lagu saat tombol diklik, tapi MATIKAN suaranya (muted).
-    // Ini mencegah suara bocor selama loading, sekaligus mendapat izin browser.
-    if (audioRef.current) {
-      audioRef.current.muted = true;
-      audioRef.current.play().catch(e => console.log("Izin audio tertunda:", e));
-    }
+    // SEMUA KODE PEMANCING AUDIO TELAH DIHAPUS DARI SINI
+    // Agar audio dipastikan mati/diam selama proses memuat
 
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ 
@@ -185,7 +176,6 @@ function App() {
       {/* --- AREA 3D & LOADING SCREEN --- */}
       {isStarted && (
         <>
-          {/* Tampilan Loading melayang di atas 3D */}
           {loadProgress < 100 && (
             <div className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-black/70 backdrop-blur-md">
                <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mb-4"></div>
