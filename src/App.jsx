@@ -106,7 +106,6 @@ function App() {
     }
   }, [isStarted]); 
 
-  // Audio BENAR-BENAR HANYA dimulai saat progress mencapai 100%
   useEffect(() => {
     if (loadProgress === 100 && isStarted && audioRef.current) {
       audioRef.current.play().catch(e => console.log("Gagal memutar audio:", e));
@@ -140,8 +139,8 @@ function App() {
   if (!artifact) return null;
 
   return (
-    // PERUBAHAN 1: Mengganti h-screen menjadi h-[100dvh] agar akurat di mobile
-    <div className="relative w-full h-[100dvh] overflow-hidden bg-black font-sans">
+    // PERBAIKAN 1: Menggunakan "fixed inset-0" untuk mengunci layar penuh dan melarang scroll sistem
+    <div className="fixed inset-0 w-full h-full overflow-hidden bg-black font-sans">
       
       <audio ref={audioRef} src={artifact.audioSrc} loop />
 
@@ -202,19 +201,17 @@ function App() {
           {/* --- BOTTOM SHEET DRAWER UI --- */}
           {loadProgress === 100 && (
             <div 
-              className={`absolute left-0 w-full bg-gray-900/90 backdrop-blur-xl rounded-t-3xl border-t border-white/20 shadow-[0_-10px_40px_rgba(0,0,0,0.5)] transition-transform duration-500 ease-in-out z-30 flex flex-col will-change-transform`}
+              // PERBAIKAN 2: "fixed bottom-0" dipastikan menempel persis di dasar kaca layar, dan z-50 agar di atas segalanya
+              className={`fixed bottom-0 left-0 w-full bg-gray-900/90 backdrop-blur-xl rounded-t-3xl border-t border-white/20 shadow-[0_-10px_40px_rgba(0,0,0,0.5)] transition-transform duration-500 ease-in-out z-50 flex flex-col will-change-transform`}
               style={{ 
-                // PERUBAHAN 2: Menggunakan dvh agar proporsi tinggi tidak tenggelam
-                height: '50dvh', 
-                bottom: 0,
-                // Mengurangi jarak translateY yang tersisa saat ditutup untuk memastikan tombol selalu aman terlihat
+                height: '50vh', 
+                // PERBAIKAN 3: Jika showInfo false (tertutup), panel akan turun tapi TETAP menyisakan gagangnya (90px)
                 transform: showInfo ? 'translateY(0)' : 'translateY(calc(100% - 90px))' 
               }}
             >
               <div 
                 onClick={() => setShowInfo(!showInfo)}
-                // Menambahkan padding-bottom aman (pb-2) agar klik lebih nyaman di layar HP
-                className="w-full h-[90px] pb-2 flex-shrink-0 flex flex-col items-center justify-center cursor-pointer px-6 relative"
+                className="w-full h-[90px] flex-shrink-0 flex flex-col items-center justify-center cursor-pointer px-6 relative"
               >
                 <div className="w-12 h-1.5 bg-gray-500/70 rounded-full mb-3 mt-2"></div>
                 
