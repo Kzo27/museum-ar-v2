@@ -108,10 +108,12 @@ function App() {
     }
   }, [isStarted]); 
 
-  // 3. Audio dimainkan tepat saat loading menyentuh angka 100%
+  // 3. Audio disinkronkan tepat saat loading mencapai 100%
   useEffect(() => {
     if (loadProgress === 100 && isStarted && audioRef.current) {
-      audioRef.current.play().catch(e => console.error("Audio batal diputar:", e));
+      // Mengembalikan lagu ke detik ke-0 dan menyalakan suaranya (unmute)
+      audioRef.current.currentTime = 0; 
+      audioRef.current.muted = false;   
     }
   }, [loadProgress, isStarted]);
 
@@ -129,11 +131,11 @@ function App() {
   const handleStartExperience = useCallback(async () => {
     setIsStarted(true);
     
-    // Trik "Unlock" Audio: Memancing izin autoplay browser dengan memutar lalu langsung menjedanya
+    // TRIK AUDIO BUNGKAM: Putar lagu saat tombol diklik, tapi MATIKAN suaranya (muted).
+    // Ini mencegah suara bocor selama loading, sekaligus mendapat izin browser.
     if (audioRef.current) {
-      audioRef.current.play().then(() => {
-        audioRef.current.pause();
-      }).catch(e => console.log("Unlock audio gagal, mungkin izin browser ditolak:", e));
+      audioRef.current.muted = true;
+      audioRef.current.play().catch(e => console.log("Izin audio tertunda:", e));
     }
 
     try {
@@ -183,6 +185,7 @@ function App() {
       {/* --- AREA 3D & LOADING SCREEN --- */}
       {isStarted && (
         <>
+          {/* Tampilan Loading melayang di atas 3D */}
           {loadProgress < 100 && (
             <div className="absolute inset-0 z-30 flex flex-col items-center justify-center bg-black/70 backdrop-blur-md">
                <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mb-4"></div>
