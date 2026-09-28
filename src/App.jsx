@@ -5,7 +5,7 @@ import '@google/model-viewer';
 const ARTIFACT_DATA = {
   Bendi: {
     title: "Bendi",
-    modelSrc: "https://assets.olicyclestove.my.id/bendi.glb",
+    modelSrc: "https://assets.olicyclestove.my.id/Bendi.glb",
     audioSrc: "/assets/sound/Bendi.m4a",
     historyTitle: "BENDI",
     historyText: "Bendi merupakan salah satu alat transportasi tradisional yang digunakan untuk mengangkut orang di Gorontalo. Keberadaan bendi di Gorontalo telah tercatat setidaknya sejak akhir abad ke-19 berdasarkan Laporan Baron Van Hoevell tahun 1899, sementara arsip foto tertua bendi di Gorontalo berasal dari tahun 1910, yang memperlihatkan bendi di depan Gedung W.B. Ledeboer & Co. Pada masa sebelum kemerdekaan, bendi digunakan sebagai sarana transportasi bagi orang Eropa, bangsawan, serta pejabat pemerintahan seperti Jogugu dan Marsaoleh. Setelah kemerdekaan, penggunaannya semakin meluas dan pada periode 1950-an hingga 1990-an, bendi berkembang menjadi salah satu moda transportasi umum utama di Gorontalo.",
