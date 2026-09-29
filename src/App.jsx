@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import '@google/model-viewer';
 
-// --- DATA ARTEFAK MUSEUM ---
 const ARTIFACT_DATA = {
   Bendi: {
     title: "Bendi",
@@ -139,12 +138,10 @@ function App() {
   if (!artifact) return null;
 
   return (
-    // PERBAIKAN 1: Menggunakan "fixed inset-0" untuk mengunci layar penuh dan melarang scroll sistem
     <div className="fixed inset-0 w-full h-full overflow-hidden bg-black font-sans">
       
       <audio ref={audioRef} src={artifact.audioSrc} loop />
 
-      {/* --- LAYAR AWAL --- */}
       {!isStarted && (
         <div className="absolute inset-0 z-50 flex flex-col items-center justify-center p-6 bg-black/80 backdrop-blur-sm text-center">
           <h1 className="text-3xl md:text-5xl font-bold text-white mb-4 tracking-wide">
@@ -162,14 +159,12 @@ function App() {
         </div>
       )}
 
-      {/* --- BACKGROUND KAMERA --- */}
       <video 
         ref={videoRef} 
         autoPlay playsInline muted
         className="absolute inset-0 w-full h-full object-cover z-0 will-change-transform"
       />
 
-      {/* --- AREA 3D & LOADING SCREEN --- */}
       {isStarted && (
         <>
           {loadProgress < 100 && (
@@ -198,14 +193,11 @@ function App() {
             className="absolute inset-0 z-10 w-full h-full bg-transparent outline-none pb-24"
           />
 
-          {/* --- BOTTOM SHEET DRAWER UI --- */}
           {loadProgress === 100 && (
             <div 
-              // PERBAIKAN 2: "fixed bottom-0" dipastikan menempel persis di dasar kaca layar, dan z-50 agar di atas segalanya
               className={`fixed bottom-0 left-0 w-full bg-gray-900/90 backdrop-blur-xl rounded-t-3xl border-t border-white/20 shadow-[0_-10px_40px_rgba(0,0,0,0.5)] transition-transform duration-500 ease-in-out z-50 flex flex-col will-change-transform`}
               style={{ 
                 height: '50vh', 
-                // PERBAIKAN 3: Jika showInfo false (tertutup), panel akan turun tapi TETAP menyisakan gagangnya (90px)
                 transform: showInfo ? 'translateY(0)' : 'translateY(calc(100% - 90px))' 
               }}
             >
